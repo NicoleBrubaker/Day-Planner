@@ -1,3 +1,39 @@
+var nineOClock = document.querySelector("#hour-9");
+var tenOClock = document.querySelector("#hour-10");
+var elevenOClock = document.querySelector("#hour-11");
+
+ var currentTime = dayjs();
+
+// Event listener for clicks on the page
+document.addEventListener('click', function(event) {
+    // Checks if the clicked element is a save button
+    if (event.target.classList.contains('saveBtn') || event.target.parentNode.classList.contains('saveBtn')) {
+        // Finds the task "description" within the respective time block
+        var timeBlock = event.target.closest('.time-block');
+        var task = timeBlock.querySelector('.description').value;
+
+        // Uses the time-block's ID to create a key for local storage
+        var timeBlockId = timeBlock.id;
+        localStorage.setItem(timeBlockId, task);
+    }
+});
+
+// Loads saved tasks
+function loadTasks() {
+    var timeBlocks = document.querySelectorAll('.time-block');
+    timeBlocks.forEach(function(block) {
+        var savedTask = localStorage.getItem(block.id);
+        if (savedTask) {
+            block.querySelector('.description').value = savedTask;
+        }
+    });
+}
+
+// Loads tasks when the page is loaded
+window.onload = loadTasks;
+
+
+
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
